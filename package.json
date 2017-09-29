@@ -1,6 +1,6 @@
 {
   "name": "@panderasystems/redux-fetch-middleware",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Redux middleware enabling fetch actions",
   "main": "lib/index.js",
   "jsnext:main": "es/index.js",
