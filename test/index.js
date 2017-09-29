@@ -82,7 +82,6 @@ test('fetchMiddleware handles failures by throwing an error', (t) => {
     })
     .catch(() => {
       const actions = store.getActions();
-      console.log(actions);
       t.equal(actions.length, 3);
       t.equal(actions[2].type, '@api/FOO_GET/FAILURE');
       t.equal(actions[2].payload.code, 404);

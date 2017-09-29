@@ -3,7 +3,7 @@ import 'isomorphic-fetch';
 
 export const API_FETCH_TYPE = '@api';
 
-const defaultSelector = x => x;
+const defaultSelector = () => null;
 
 export function actionTypeStarted(actionType) {
   return `${API_FETCH_TYPE}/${actionType}/STARTED`;
@@ -16,13 +16,16 @@ export function actionTypeFailure(actionType) {
 }
 
 const createFetchMiddleware = (
-  tokenSelector = defaultSelector,
+  tokenSelector = defaultSelector, // Defaults to returning null
   baseUrl = '',
 ) => ({ dispatch, getState }) => next => (action) => {
   if (!action.meta || action.meta.type !== API_FETCH_TYPE) {
     return next(action);
   }
-  next(action); //Finish dispatching this action so we see it in the history, but
+
+  // Call next to allow this action to continue through redux
+  // which allows us to see history, but don't return here, we have work to do!
+  next(action);
   const state = getState();
   const { url, method = 'GET', config = {} } = action.meta;
   const token = tokenSelector(state);
@@ -50,7 +53,7 @@ const createFetchMiddleware = (
       err.code = response.status;
       err.message = response.statusText;
       dispatch(createAction(actionTypeFailure(action.type))(err));
-      return new Promise.reject(err);
+      return Promise.reject(err);
     }
 
     const type = response.headers.get('content-type');
@@ -61,7 +64,7 @@ const createFetchMiddleware = (
       resultPromise = response.text();
     }
     resultPromise.then(result =>
-      dispatch(createAction(actionTypeSuccess(action.type))(result))
+      dispatch(createAction(actionTypeSuccess(action.type))(result)),
     );
     return resultPromise;
   });

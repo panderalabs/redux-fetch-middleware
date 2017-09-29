@@ -7,7 +7,9 @@
   "scripts": {
     "clean": "rimraf lib dist es",
     "build": "npm run build:commonjs && npm run build:es",
+    "prepublish": "npm run clean && npm run test && npm run build",
     "test": "BABEL_ENV=commonjs tape -r babel-register test/**/*.js",
+    "posttest": "npm run lint",
     "lint": "eslint src test",
     "build:commonjs": "cross-env BABEL_ENV=commonjs babel src --out-dir lib",
     "build:es": "cross-env BABEL_ENV=es babel src --out-dir es"
