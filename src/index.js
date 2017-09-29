@@ -1,5 +1,4 @@
 import { createAction } from 'redux-actions';
-import 'isomorphic-fetch';
 
 export const API_FETCH_TYPE = '@api';
 
@@ -36,9 +35,11 @@ const createFetchMiddleware = (
   }
 
   const baseHeaders = {
-    Authorization: token && `Bearer ${token}`,
     Accept: 'application/json',
   };
+  if (token) {
+    baseHeaders.Authorization = `Bearer ${token}`;
+  }
 
   config.headers = Object.assign({}, baseHeaders, config.headers);
   config.method = method;

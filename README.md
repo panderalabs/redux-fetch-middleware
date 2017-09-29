@@ -75,11 +75,12 @@ function fetchFoo() {
 }
 ```
 
+It's intended to use as a way to communicate with your primary, authenticated (using the Authorization header) api. If you want to communicate with 3rd party apis, you can overwrite the authorization header and any other configs by passing in a config object with the headers defined.
 
 
 ## How do I use it
 
-Any time you create an action with a meta object with type `@api`, the middleware will automatically make a fetch call using the `method` and `url` also defined on your meta object.
+Any time you create an action with a meta object with type `@api`, the middleware will automatically make a fetch call using the `method` and `url` also defined on your meta object. If you're making a POST request, the payload from your action will be set as the body in the request.
 
 ```js
 const FOO_FETCH = 'FOO_FETCH';
@@ -128,15 +129,15 @@ const fetchMiddleware = createFetchMiddleware(
 )
 ```
 
-## More examples
+## More Details
 
 ```js
 // Posting data
-const FOO_POST = 'FOO_FETCH';
+const FOO_POST = 'FOO_POST';
 function postFoo(data) {
   return {
-    type: 'FOO_POST',
-    payload: data,
+    type: FOO_POST,
+    payload: data, // payload is set as the body of the request
     meta: {
       type: '@api',
       method: 'POST',
@@ -147,17 +148,30 @@ function postFoo(data) {
 
 // Other configs:
 function postFoo() {
-  type: 'FOO_POST',
+  type: FOO_POST,
   payload: data,
   meta: {
     type: '@api',
     url: '/foo',
-    method: 'GET', // optional: default to GET
+    method: 'GET', // optional: defaults to GET
     config: { // optional: Supports any configuration that can be passed into fetch
       // Note: method and body will be overwritten by the method and payload passed into the meta object
       headers: {
         'Content-Type': 'application/json',
         credentials: 'same-origin', // Used to send across cookies
+      }
+    }
+  }
+}
+
+function getExternalResource() {
+  type: 'EXTERNAL_GET',
+  meta: {
+    type: '@api',
+    url: 'http://example.com/api/foos',
+    config: {
+      headers: {
+        Authorization: null // Will overwrite the default authorization header
       }
     }
   }

@@ -1,6 +1,7 @@
 import test from 'tape';
 import configureMockStore from 'redux-mock-store';
 import nock from 'nock';
+import 'isomorphic-fetch';
 
 // TODO: Add more tests for redux functionality
 
