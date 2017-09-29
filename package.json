@@ -1,9 +1,19 @@
 {
   "name": "@panderasystems/redux-fetch-middleware",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Redux middleware enabling fetch actions",
   "main": "lib/index.js",
   "jsnext:main": "es/index.js",
+  "files": [
+    "lib",
+    "es",
+    "src",
+    "dist",
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/panderasystems/redux-fetch-middleware"
+  },
   "scripts": {
     "clean": "rimraf lib dist es",
     "build": "npm run build:commonjs && npm run build:es",
