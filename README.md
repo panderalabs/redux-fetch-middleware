@@ -118,7 +118,7 @@ const store = createStore(
 
 ### Available options
 
-When creating the middlware, you have a couple of options available:
+When creating the middleware, you have a couple of options available:
 
 ```js
 import createFetchMiddleware from '@panderasystems/redux-fetch-middleware';
@@ -184,5 +184,6 @@ A Promise is always returned from the dispatch of this action and will be resolv
 dispatch(getFoo())
   .then(dispatch(postFoo({foo: 'bar'})))
   .then(dispatch(getExternalResource()))
-  .catch((err) => console.log('Error in the chain')) // It's not necessary to catch this error as the FAILURE action will be dispatched automatically
+  // It's not necessary to catch this error as the FAILURE action will be dispatched automatically
+  .catch((err) => console.log('Error in the chain'))
 ```
