@@ -147,7 +147,7 @@ function postFoo(data) {
 }
 
 // Other configs:
-function postFoo() {
+function postFoo(data) {
   type: FOO_POST,
   payload: data,
   meta: {
@@ -176,5 +176,13 @@ function getExternalResource() {
     }
   }
 }
+```
 
+A Promise is always returned from the dispatch of this action and will be resolved/rejected once the API call is completed. If you want to chain your api calls, feel free to do that!
+
+```js
+dispatch(getFoo())
+  .then(dispatch(postFoo({foo: 'bar'})))
+  .then(dispatch(getExternalResource()))
+  .catch((err) => console.log('Error in the chain')) // It's not necessary to catch this error as the FAILURE action will be dispatched automatically
 ```
