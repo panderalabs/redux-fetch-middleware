@@ -45,7 +45,7 @@ const createFetchMiddleware = (
   config.method = method;
 
   if (action.payload) {
-    config.body = JSON.stringify(config.body);
+    config.body = JSON.stringify(action.payload);
   }
   dispatch(createAction(actionTypeStarted(action.type))());
   return fetch(endpoint, config).then((response) => {
