@@ -2,7 +2,7 @@ Redux Fetch Middleware
 =============
 
 ```js
-npm install --save @panderasystems/redux-fetch-middleware
+npm install --save @panderalabs/redux-fetch-middleware
 npm install --save whatwg-fetch // It's assumed that fetch is available on the client you're using
 ```
 
