@@ -30,7 +30,7 @@
     "react"
   ],
   "author": "Ed Siok",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "redux-actions": "^2.2.1"
   },
