@@ -89,3 +89,41 @@ test('fetchMiddleware handles failures by throwing an error', (t) => {
       t.equal(actions[2].payload.message, 'Not Found');
     });
 });
+
+test('fetchMiddleware passes additional args to response as meta', (t) => {
+  t.plan(2);
+  nock('http://example.com')
+    .get('/foo')
+    .reply(200, 'OK!');
+  const middlewares = [
+    createFetchMiddleware(),
+  ];
+  const meta = { id: 1, childId: 2 };
+  const actions = [
+    {
+      type: 'FOO_GET',
+      meta: {
+        type: '@api',
+        url: 'http://example.com/foo',
+        ...meta,
+      },
+    },
+    {
+      type: '@api/FOO_GET/STARTED',
+    },
+    {
+      type: '@api/FOO_GET/SUCCESS',
+      payload: 'OK!',
+    },
+  ];
+
+  const store = configureMockStore(middlewares)();
+  store
+    .dispatch(actions[0])
+    .then(() => {
+      const storeActions = store.getActions();
+      t.equal(storeActions[2].payload, 'OK!');
+      t.deepEqual(storeActions[2].meta, meta);
+    })
+    .catch(err => t.fail(err));
+});
