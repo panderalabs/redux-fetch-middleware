@@ -18,15 +18,13 @@ export function actionTypeFailure(actionType) {
 
 const sanitizeAction = (action) => {
   const stripBlankMeta = (a) => {
-    // Dont return meta key if its a blank object
     if (!Object.keys(a.meta).length) {
-      const { meta, ...stripedMeta } = a;
-      return stripedMeta;
+      const { meta, ...rest } = a;
+      return rest;
     }
 
     return a;
   };
-
 
   return ([
     stripBlankMeta,
@@ -71,27 +69,33 @@ const createFetchMiddleware = (
       'Content-Type': 'application/json',
     });
   }
+
   dispatch(createAction(actionTypeStarted(action.type))());
+
   return fetch(endpoint, config).then((response) => {
     if (!response.ok) {
       const err = new Error(response.statusText);
       err.code = response.status;
       err.message = response.statusText;
+
       dispatch(sanitizeAction(createAction(
         actionTypeFailure(action.type),
         ({ err: payload }) => payload,
         ({ meta }) => meta,
       )({ err, meta: { ...rest } })));
+
       return Promise.reject(err);
     }
 
-    const type = response.headers.get('content-type');
+    const contentType = response.headers.get('content-type');
     let resultPromise;
-    if (/application\/json/.test(type)) {
+
+    if (/application\/json/.test(contentType)) {
       resultPromise = response.json();
     } else {
       resultPromise = response.text();
     }
+
     resultPromise.then(result => (
       dispatch(sanitizeAction(createAction(
         actionTypeSuccess(action.type),
@@ -99,6 +103,7 @@ const createFetchMiddleware = (
         ({ meta }) => meta,
       )({ result, meta: { ...rest } })))
     ));
+
     return resultPromise;
   });
 };
