@@ -178,6 +178,53 @@ function getExternalResource() {
 }
 ```
 
+## Pass Back Meta
+
+When working with sub-resources it is often benificial for the reducers to know about the parent.
+Instead of creating a seprate success action to handle this extraction like so.
+
+```js
+const GET_SUB_RESOURCE_SUCCESS = 'GET_SUB_RESOURCE_SUCCESS';
+function getSubResourceSuccess(result) {
+  return {
+    type: GET_SUB_RESOURCE_SUCCESS,
+    payload: result,
+  };
+}
+
+function getSubResource(parentId) {
+  function action() {
+    type: 'SUB_RESOURCE_GET',
+    meta: {
+      type: '@api',
+      url: `http://example.com/api/foos/${parentId}/bars`,
+    }
+  }
+
+  dispatch(apiAction())
+     // dispatch apiAction, on success pass back subResource and parentId as payload.
+    .then(({ subResource }) => dispatch(getSubResoucreSuccess({ subResource, parentId }))
+}
+```
+
+we can now just do this.
+
+```js
+function getSubResource(parentId) {
+  type: 'GET_SUB_RESOURCE',
+  meta: {
+    type: '@api',
+    url: `http://example.com/api/foo/${parentId}/bars`,
+    // pass in anything you want to comeback as meta.
+    parentId,
+  }
+}
+
+// result will look like
+// { payload: subResource, meta: { parentId }}
+```
+
+
 A Promise is always returned from the dispatch of this action and will be resolved/rejected once the API call is completed. If you want to chain your api calls, feel free to do that!
 
 ```js
