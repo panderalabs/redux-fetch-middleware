@@ -1,6 +1,6 @@
 {
   "name": "@panderalabs/redux-fetch-middleware",
-  "version": "1.0.5",
+  "version": "1.1.0",
   "description": "Redux middleware enabling fetch actions",
   "main": "lib/index.js",
   "jsnext:main": "es/index.js",
@@ -24,12 +24,15 @@
     "build:commonjs": "cross-env BABEL_ENV=commonjs babel src --out-dir lib",
     "build:es": "cross-env BABEL_ENV=es babel src --out-dir es"
   },
+  "contributors": [
+    "Bry Zettler <bry@panderalabs.com>"
+  ],
   "keywords": [
     "redux",
     "fetch",
     "react"
   ],
-  "author": "Ed Siok",
+  "author": "Ed Siok <ed@panderalabs.com>",
   "license": "MIT",
   "dependencies": {
     "redux-actions": "^2.2.1"
