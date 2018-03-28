@@ -77,6 +77,7 @@ const createFetchMiddleware = (
       const err = new Error(response.statusText);
       err.code = response.status;
       err.message = response.statusText;
+      err.response = response;
 
       dispatch(sanitizeAction(createAction(
         actionTypeFailure(action.type),
