@@ -60,7 +60,7 @@ test('fetchMiddleware acts on actions with type @api', (t) => {
 });
 
 test('fetchMiddleware handles failures by throwing an error', (t) => {
-  t.plan(4);
+  t.plan(6);
   nock('http://example.com')
     .get('/error')
     .reply(404, 'Not Found');
@@ -87,6 +87,8 @@ test('fetchMiddleware handles failures by throwing an error', (t) => {
       t.equal(actions[2].type, '@api/FOO_GET/FAILURE');
       t.equal(actions[2].payload.code, 404);
       t.equal(actions[2].payload.message, 'Not Found');
+      t.equal(actions[2].payload.response.status, 404);
+      t.equal(actions[2].payload.response.statusText, 'Not Found');
     });
 });
 

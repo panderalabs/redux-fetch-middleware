@@ -178,7 +178,7 @@ function getExternalResource() {
 }
 ```
 
-## Pass Back Meta
+### Pass Back Meta
 
 When working with sub-resources it is often benificial for the reducers to know about the parent.
 Instead of creating a seprate success action to handle this extraction like so.
@@ -233,4 +233,20 @@ dispatch(getFoo())
   .then(dispatch(getExternalResource()))
   // It's not necessary to catch this error as the FAILURE action will be dispatched automatically
   .catch((err) => console.log('Error in the chain'))
+```
+
+### Error Messaging
+
+If you receive an error from your fetch call, a `*/FAILURE` action will be dispatched, the contents of which will contain a status code, status text, and original response. The payload will look like this:
+
+```
+{
+  type: '@api/action/FAILURE',
+  err: {
+    code: 404,
+    message: 'Not Found',
+    response: { ... } // The full body of the response from Fetch (Which you can call .json() on if it's a json payload)
+  },
+  meta: { ... } // Any meta data attached to the original action
+}
 ```
