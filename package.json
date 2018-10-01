@@ -12,7 +12,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/panderasystems/redux-fetch-middleware"
+    "url": "https://github.com/panderalabs/redux-fetch-middleware"
   },
   "scripts": {
     "clean": "rimraf lib dist es",
